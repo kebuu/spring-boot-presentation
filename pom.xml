@@ -12,6 +12,7 @@
     <modules>
         <module>tp1-helloworld</module>
         <module>tp1-helloworld-ok</module>
+        <module>tp8-remote-shell</module>
     </modules>
 
     <parent>
