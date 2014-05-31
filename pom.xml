@@ -16,6 +16,7 @@
         <module>tp3-spring-loaded-ok</module>
         <module>tp8-remote-shell-ok</module>
         <module>tp7-metrics-ok</module>
+        <module>tp2-war-package-ok</module>
     </modules>
 
     <parent>

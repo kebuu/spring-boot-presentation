@@ -11,15 +11,15 @@ import org.springframework.web.client.RestTemplate;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes=HelloWolrdApplication.class)
+@SpringApplicationConfiguration(classes=HelloWorldApplication.class)
 @WebAppConfiguration
 @IntegrationTest
-public class HelloWolrdApplicationTest {
+public class HelloWorldApplicationTest {
 
     private RestTemplate restTemplate = new RestTemplate();
 
     @Test
     public void testHello() {
-        assertThat(restTemplate.getForObject("http://localhost:8050", String.class)).isEqualTo(HelloWolrdApplication.HELLO_MESSAGE);
+        assertThat(restTemplate.getForObject("http://localhost:8050", String.class)).isEqualTo(HelloWorldApplication.HELLO_MESSAGE);
     }
 }
