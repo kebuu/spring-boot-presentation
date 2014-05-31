@@ -17,6 +17,7 @@
         <module>tp8-remote-shell-ok</module>
         <module>tp7-metrics-ok</module>
         <module>tp2-war-package-ok</module>
+        <module>tp4-data-h2-ok</module>
     </modules>
 
     <parent>
