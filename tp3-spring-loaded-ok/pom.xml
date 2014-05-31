@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>tp8-remote-shell</artifactId>
+    <artifactId>tp3-spring-loaded-ok</artifactId>
 
     <dependencies>
         <dependency>
@@ -17,10 +17,9 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.jcraft</groupId>
-            <artifactId>jsch</artifactId>
-            <version>0.1.51</version>
-            <scope>test</scope>
+            <groupId>org.springframework</groupId>
+            <artifactId>springloaded</artifactId>
+            <version>1.2.0.RELEASE</version>
         </dependency>
     </dependencies>
 </project>

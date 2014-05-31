@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @EnableAutoConfiguration
-public class Application {
+public class HelloWolrdApplication {
 
     public static final String HELLO_MESSAGE = "Hello World!";
 
@@ -17,7 +17,7 @@ public class Application {
     }
 
     public static void main(String[] args) throws Exception {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(HelloWolrdApplication.class, args);
     }
 
 }
