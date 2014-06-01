@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringApplicationConfiguration(classes=SpringDataH2Application.class)
 @WebAppConfiguration
 @IntegrationTest
-public class HelloWorldApplicationTest {
+public class SpringDataH2ApplicationTest {
 
     private RestTemplate restTemplate = new RestTemplate();
     private ObjectMapper objectMapper = new ObjectMapper();
