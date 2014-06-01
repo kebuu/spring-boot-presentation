@@ -19,6 +19,8 @@
         <module>tp2-war-package-ok</module>
         <module>tp4-data-h2-ok</module>
         <module>tp5-messaging</module>
+        <module>tp6-websocket</module>
+        <module>tp6-websocket-ok</module>
     </modules>
 
     <parent>
