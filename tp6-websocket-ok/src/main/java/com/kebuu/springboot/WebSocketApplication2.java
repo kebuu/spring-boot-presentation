@@ -6,10 +6,10 @@ import org.springframework.context.annotation.ComponentScan;
 
 @EnableAutoConfiguration
 @ComponentScan
-public class WebsocketApplication {
+public class WebSocketApplication2 {
 
     public static void main(String[] args) throws Exception {
-        SpringApplication.run(WebsocketApplication.class, args);
+        SpringApplication.run(WebSocketApplication2.class, args);
     }
 
 }
