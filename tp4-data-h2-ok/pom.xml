@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>tp4-mongo-ok</artifactId>
+    <artifactId>tp4-data-h2-ok</artifactId>
 
     <dependencies>
         <dependency>
