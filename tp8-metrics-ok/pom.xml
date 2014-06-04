@@ -9,7 +9,17 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>tp7-metrics</artifactId>
+    <artifactId>tp8-metrics-ok</artifactId>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <version>2.1.9</version>
+            </plugin>
+        </plugins>
+    </build>
 
     <dependencies>
         <dependency>

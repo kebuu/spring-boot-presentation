@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>tp8-remote-shell</artifactId>
+    <artifactId>tp7-remote-shell</artifactId>
 
     <dependencies>
         <dependency>

@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
 @EnableAutoConfiguration
-public class RemoteShellApplication {
+public class RemoteShellApplication2 {
 
     public static void main(String[] args) throws Exception {
-        SpringApplication.run(RemoteShellApplication.class, args);
+        SpringApplication.run(RemoteShellApplication2.class, args);
     }
 
 }

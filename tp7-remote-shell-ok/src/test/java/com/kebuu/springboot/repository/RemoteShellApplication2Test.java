@@ -1,8 +1,9 @@
-package com.kebuu.springboot;
+package com.kebuu.springboot.repository;
 
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
+import com.kebuu.springboot.RemoteShellApplication2;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,10 +13,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes=RemoteShellApplication.class)
+@SpringApplicationConfiguration(classes=RemoteShellApplication2.class)
 @WebAppConfiguration
 @IntegrationTest
-public class RemoteShellApplicationTest {
+public class RemoteShellApplication2Test {
 
     @Test
     public void testShell() throws JSchException {
