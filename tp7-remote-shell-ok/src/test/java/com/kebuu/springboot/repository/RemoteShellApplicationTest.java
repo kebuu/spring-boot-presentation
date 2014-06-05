@@ -21,7 +21,7 @@ public class RemoteShellApplicationTest {
     @Test
     public void testShell() throws JSchException {
         JSch jSch = new JSch();
-        Session session = jSch.getSession("zenika", "127.0.1", 2222);
+        Session session = jSch.getSession("zenika", "127.0.0.1", 2222);
         session.setPassword("technozaure");
         session.setConfig("StrictHostKeyChecking", "no");
         session.connect();
