@@ -11,10 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Configuration
 @EnableAutoConfiguration
-public class Client extends SpringBootServletInitializer {
+public class Client  {
 
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(Client.class);
+    public static void main(String[] args) throws Exception {
+        SpringApplication.run(Client.class, args);
     }
 }
