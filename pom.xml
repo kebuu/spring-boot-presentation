@@ -26,8 +26,13 @@
         <module>tp8-metrics-ok</module>
         <module>tp9-security</module>
         <module>tp9-security-ok</module>
-        <module>spring-boot-race</module>
+        <module>spring-boot-race-server</module>
+        <module>spring-boot-race-client</module>
     </modules>
+
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
