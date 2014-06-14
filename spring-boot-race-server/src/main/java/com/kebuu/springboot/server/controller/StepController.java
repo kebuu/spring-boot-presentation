@@ -5,14 +5,12 @@ import com.kebuu.springboot.server.domain.GameStep;
 import com.kebuu.springboot.server.enums.Step;
 import com.kebuu.springboot.server.pojo.GameStatus;
 import com.kebuu.springboot.server.repository.GameStepRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.*;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.Charset;
@@ -21,6 +19,7 @@ import java.util.Optional;
 import java.util.stream.StreamSupport;
 
 @RestController
+@Slf4j
 public class StepController {
 
     @Autowired
@@ -33,9 +32,10 @@ public class StepController {
     private Environment environment;
 
     @RequestMapping("/{userPseudo}/start")
-    public ResponseEntity<Void> startPlaying(String userPseudo) {
+    public ResponseEntity<Void> startPlaying(@PathVariable("userPseudo") String userPseudo) {
         GameStep gameStep = new GameStep(userPseudo, Step._0);
         gameStepRepository.save(gameStep);
+        log.info("Starting game for player {}", userPseudo);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
@@ -96,8 +96,13 @@ public class StepController {
     }
 
     @RequestMapping("/{userPseudo}/validateStep5")
-    public ResponseEntity<Void> validateStep5(String userPseudo) {
-        //Trouver le hash du git.commit
+    public ResponseEntity<Void> validateStep5(String userPseudo, @RequestParam("gitShortSha1") String gitShortSha1) {
+        Optional.of(environment.getProperty("git.commit.id.abbrev"))
+            .filter(property -> property.equals(gitShortSha1))
+            .ifPresent(x -> {
+                gameStepRepository.save(new GameStep(userPseudo, Step._5));
+            });
+
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 

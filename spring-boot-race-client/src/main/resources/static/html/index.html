@@ -12,18 +12,18 @@
     <div class="mainConfig">
         <form name="configForm" ng-submit="startPlaying()" novalidate>
             <p>
-                <label for="pseudo">Pseudo</label><input id="pseudo" type="text" ng-model="pseudo" ng-required/>
+                <label for="pseudo">Pseudo</label><input id="pseudo" type="text" ng-model="userPseudo" required/>
             </p>
             <p>
-                <label for="serverIp">Ip du server</label><input id="serverIp" type="text" ng-model="serverIp" ng-required/>
+                <label for="serverIp">Ip du server</label><input id="serverIp" type="text" ng-model="serverIp" required/>
             </p>
             <p>
                 <label for="clientIp">Votre ip</label><input id="clientIp" type="text" ng-model="clientIp"/>
             </p>
             <button type="submit">Tester la connection au serveur</button>
             <p>
-                <span ng-show="configOk === 1" class="error">Impossible de se connecter au serveur</span>
-                <span ng-show="configOk === -1" class="success">Cela semble bon vous pouvez commencer à jouer</span>
+                <span ng-show="configOk === 1" class="success">Cela semble bon vous pouvez commencer à jouer</span>
+                <span ng-show="configOk === -1" class="error">Impossible de se connecter au serveur</span>
             </p>
         </form>
     </div>

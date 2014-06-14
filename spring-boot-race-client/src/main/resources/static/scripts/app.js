@@ -3,12 +3,12 @@ var module = angular.module('springBootRaceClient', []);
 module.controller('mainCtrl', function($scope, $http) {
 
     var buildBaseUrl = function(serverIp, userPseudo) {
-        return url = 'http://' + $scope.serverIp + '/' + $scope.userPseudo + '/'
+        return url = 'http://' + $scope.serverIp + '/' + $scope.userPseudo + '/';
     };
 
     $scope.startPlaying = function() {
         $scope.configOk = 0;
-        $http.get(buildBaseUrl($scope.serverIp, $scope.userPseudo)
+        $http.get(buildBaseUrl($scope.serverIp, $scope.userPseudo) + 'start')
             .success(function() {
                 $scope.configOk = 1;
             })
@@ -21,7 +21,7 @@ module.controller('mainCtrl', function($scope, $http) {
     $scope.validateStep1 = function() {
         $scope.step1 = 0;
 
-        $http.get(buildBaseUrl($scope.serverIp, $scope.userPseudo)
+        $http.get(buildBaseUrl($scope.serverIp, $scope.userPseudo))
             .success(function() {
                 $scope.step1 = 1;
             })
