@@ -3,6 +3,9 @@ package com.kebuu.springboot.server.controller;
 import com.kebuu.springboot.server.config.StepConfig;
 import com.kebuu.springboot.server.domain.GameStep;
 import com.kebuu.springboot.server.enums.Step;
+import com.kebuu.springboot.server.pojo.GameStatus;
+import com.kebuu.springboot.server.pojo.StepInfo;
+import com.kebuu.springboot.server.pojo.UserGameStatus;
 import com.kebuu.springboot.server.repository.GameStepRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -15,9 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import java.nio.charset.Charset;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static java.util.stream.Collectors.toList;
@@ -92,11 +94,11 @@ public class StepController {
 
         ResponseEntity<Void> result = new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 
-        String url = userHostAndPort + "/env";
+        String url = "http://" + userHostAndPort + "/env";
 
-        ResponseEntity<String> responseEntityShouldFail = restTemplate.getForEntity(url, String.class);
+        ResponseEntity<String> responseEntityShouldFail = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<>(new HttpHeaders()), String.class);
 
-        byte[] encodedAuth = Base64.encodeBase64("zenika:technnozaure".getBytes(Charset.forName("US-ASCII")));
+        byte[] encodedAuth = Base64.encodeBase64("zenika:technozaure".getBytes());
         String authHeader = "Basic " + new String(encodedAuth);
 
         HttpHeaders headers = new HttpHeaders();
@@ -106,7 +108,7 @@ public class StepController {
 
         ResponseEntity<String> responseEntityShouldSucceed = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
 
-        if(responseEntityShouldFail.getStatusCode() == HttpStatus.FORBIDDEN && responseEntityShouldSucceed.getStatusCode() == HttpStatus.OK) {
+        if(responseEntityShouldFail.getStatusCode() != HttpStatus.OK && responseEntityShouldSucceed.getStatusCode() == HttpStatus.OK) {
             gameStepRepository.save(new GameStep(userPseudo, Step._4));
             result = new ResponseEntity<Void>(HttpStatus.OK);
         }
@@ -115,12 +117,12 @@ public class StepController {
     }
 
     @RequestMapping("/{userPseudo}/validateStep5")
-    public ResponseEntity<Void> validateStep5(@PathVariable("userPseudo") String userPseudo, @RequestParam("gitShortSha1") String gitShortSha1) {
-        log.info("Validation step 5 for player {} with data {}", userPseudo, gitShortSha1);
+    public ResponseEntity<Void> validateStep5(@PathVariable("userPseudo") String userPseudo, @RequestParam("secret") String secret) {
+        log.info("Validation step 5 for player {} with data {}", userPseudo, secret);
 
         ResponseEntity<Void> result = new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 
-        if(environment.getProperty("git.commit.id.abbrev").equals(gitShortSha1)) {
+        if(environment.getProperty("git.commit.id.abbrev").equals(secret)) {
             gameStepRepository.save(new GameStep(userPseudo, Step._5));
             result = new ResponseEntity<Void>(HttpStatus.OK);
         }
@@ -135,13 +137,19 @@ public class StepController {
         ResponseEntity<Void> result = new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 
         HttpHeaders headers = new HttpHeaders();
+        headers.set("Accept", "*/*");
+        headers.set("Accept-Encoding", "gzip,deflate,sdch");
+        headers.set("Accept-Language", "fr-FR,fr;q=0.8,en-US;q=0.6,en;q=0.4");
+        headers.set("Cache-Control", "no-cache");
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Origin", "chrome-extension://fdmmgilgnpjigdojojpjoooidkmcomcm");
         headers.set("Host", "localhost:8182");
         headers.setConnection("Keep-alive");
+//        headers.set("X-Requested-With", "XMLHttpRequest");
         headers.set("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36");
 
-        ResponseEntity<String> responseEntity = restTemplate.exchange("http://" + userHostAndPort + "/health", HttpMethod.OPTIONS, new HttpEntity<String>(headers), String.class);
+        //ResponseEntity<String> responseEntity = restTemplate.exchange("http://google.com", HttpMethod.OPTIONS, new HttpEntity<String>(headers), String.class);
+        ResponseEntity<String> responseEntity = restTemplate.exchange("http://127.0.0.1:8182/actuator/health", HttpMethod.OPTIONS, new HttpEntity<String>(headers), String.class);
 
         if(responseEntity.getHeaders().containsKey("Access-Control-Allow-Origin")) {
             gameStepRepository.save(new GameStep(userPseudo, Step._6));
@@ -153,11 +161,35 @@ public class StepController {
     }
 
     @RequestMapping("/gameStatus")
-    public ResponseEntity<List<GameStep>> gameStatus() {
+    public ResponseEntity<GameStatus> gameStatus() {
+        GameStatus gameStatus = new GameStatus();
+
         Iterable<GameStep> gameSteps = gameStepRepository.findAll();
 
         List<GameStep> collect = StreamSupport.stream(gameSteps.spliterator(), false).collect(toList());
 
-        return new ResponseEntity<List<GameStep>>(collect, HttpStatus.OK);
+        Map<String, List<GameStep>> gameStepByUser = StreamSupport.stream(gameSteps.spliterator(), false)
+                                                             .collect(Collectors.groupingBy(GameStep::getUserPseudo));
+
+        for (Map.Entry<String, List<GameStep>> gameStepByUserEntry : gameStepByUser.entrySet()) {
+            UserGameStatus userGameStatus = new UserGameStatus();
+
+            userGameStatus.setPseudo(gameStepByUserEntry.getKey());
+
+            Map<Step, List<GameStep>> gameStepByStep = gameStepByUserEntry.getValue().stream().collect(Collectors.groupingBy(GameStep::getStep));
+
+            for (Map.Entry<Step, List<GameStep>> gameStepByStepEntry : gameStepByStep.entrySet()) {
+                gameStepByStepEntry.getValue().stream()
+                        .min(Comparator.comparing(GameStep::getInstant))
+                        .ifPresent(gameStep -> {
+                            userGameStatus.getStepInfos().add(new StepInfo(gameStep.getStep(), gameStep.getInstant()));
+
+                        });
+            }
+
+            gameStatus.getUserGameStatus().add(userGameStatus);
+        }
+
+        return new ResponseEntity<GameStatus>(gameStatus, HttpStatus.OK);
     }
 }

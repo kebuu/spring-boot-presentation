@@ -1,6 +1,6 @@
 var module = angular.module('springBootRaceServer', []);
 
-module.controller('mainCtrl', function($scope, $http) {
+module.controller('mainCtrl', function($scope, $http, $interval) {
     /**
         {
             pseudo: "pseudo",
@@ -12,5 +12,12 @@ module.controller('mainCtrl', function($scope, $http) {
     */
 
     $scope.gameStatus = [];
+
+    $interval(function() {
+        $http.get('/gameStatus').success(function(data) {
+            console.log(data.userGameStatus, arguments);
+            $scope.gameStatus = data.userGameStatus;
+        })
+    }, 1000);
 
 });
