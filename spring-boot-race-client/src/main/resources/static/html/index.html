@@ -30,21 +30,35 @@
     <div class="stepContainer">
         <div class="step1">
             <button ng-click="validateStep1()">Valider étape 1</button>
+            <span ng-show="step1 === 1" class="success">{{stepValidatedMessage}}</span>
+            <span ng-show="step1 === -1" class="error">{{stepNotValidatedMessage}}</span>
         </div>
         <div class="step2">
             <form ng-submit="validateStep2()">
+                <input type="text" ng-model="step2Secret"/>
                 <button type="submit">Valider étape 2</button>
+                <span ng-show="step2 === 1" class="success">{{stepValidatedMessage}}</span>
+                <span ng-show="step2 === -1" class="error">{{stepNotValidatedMessage}}</span>
             </form>
         </div>
         <div class="step3">
             <form ng-submit="validateStep3()">
-                <input type="text" ng-model="stepSecret"/>
+                <input type="text" ng-model="step3Secret"/>
                 <button type="submit">Valider étape 3</button>
+                <span ng-show="step3 === 1" class="success">{{stepValidatedMessage}}</span>
+                <span ng-show="step3 === -1" class="error">{{stepNotValidatedMessage}}</span>
             </form>
         </div>
         <div class="step4">
-            <input type="text" ng-model="clientIp"/>
             <button ng-click="validateStep4()">Valider étape 4</button>
+            <span ng-show="step4 === 1" class="success">{{stepValidatedMessage}}</span>
+            <span ng-show="step4 === -1" class="error">{{stepNotValidatedMessage}}</span>
+        </div>
+        <div class="step5">
+            <input type="text" ng-model="step5Secret"/>
+            <button ng-click="validateStep5()">Valider étape 5</button>
+            <span ng-show="step5 === 1" class="success">{{stepValidatedMessage}}</span>
+            <span ng-show="step5 === -1" class="error">{{stepNotValidatedMessage}}</span>
         </div>
     </div>
 </div>
