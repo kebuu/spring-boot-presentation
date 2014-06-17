@@ -15,10 +15,35 @@
 <body ng-app="springBootRaceServer">
 
 <div ng-controller="mainCtrl">
-        <div ng-repeat="userGameStatus in gameStatus">
-            <div>{{userGameStatus.pseudo}}</div>
-            <div ng-repeat="stepInfo in userGameStatus.stepInfos">{{stepInfo.step}} {{stepInfo.instant.epochSecond}}</div>
+
+    <div class="navbar navbar-inverse" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <h1 class="navbar-brand">Spring-boot Race Server</h1>
+            </div>
         </div>
+    </div>
+
+    <div class="container">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Pseudo</th>
+                    <th>Etapes validées</th>
+                    <th>Chrono</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="userGameStatus in gameStatus | orderBy:['-nbOfValidatedStep','chrono']">
+                    <td>{{$index + 1}}</td>
+                    <td>{{userGameStatus.pseudo}}</td>
+                    <td>{{userGameStatus.validatedSteps}}</td>
+                    <td>{{userGameStatus.chronoString}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 </body>

@@ -39,8 +39,6 @@ public class StepController {
 
     @RequestMapping("/{userPseudo}/start")
     public ResponseEntity<Void> startPlaying(@PathVariable("userPseudo") String userPseudo) {
-        GameStep gameStep = new GameStep(userPseudo, Step._0);
-        gameStepRepository.save(gameStep);
         log.info("Starting game for player {}", userPseudo);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }

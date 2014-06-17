@@ -23,17 +23,12 @@
         </div>
 
         <div class="container">
-
             <div class="row">
-
                 <div class="col-md-12">
-
                     <div class="mainConfig">
-
                         <form name="configForm" ng-submit="startPlaying()" novalidate role="form">
                             <div>
                                 <h2>Configuration</h2>
-
                                 <div class="form-group">
                                     <label for="pseudo">Pseudo</label>
                                     <input type="text" class="form-control" id="pseudo" placeholder="Votre pseudo"  ng-model="userPseudo" required />
@@ -56,12 +51,9 @@
                                 <p class="text-success" ng-show="configOk === 1">Cela semble bon vous pouvez commencer à jouer</p>
                                 <p class="text-danger" ng-show="configOk === -1">Impossible de se connecter au serveur</p>
                             </div>
-
                         </form>
                     </div>
-
                 </div>
-
             </div>
 
             <div class="row">
@@ -72,50 +64,122 @@
             <div class="row">
                 <div class="col-md-8">
                     <p>
-                        <strong>Objectif :</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eros augue, vestibulum quis venenatis sit amet, venenatis at nisi. Curabitur tempor magna vel elementum tristique.
+                        <strong>Objectif :</strong> Démarrer un serveur web embarqué et lui ajouter les endpoints actuator
                     </p>
                     <p>
-                        <button tooltip-placement="right" tooltip-trigger="mouseenter" tooltip-html-unsafe="Vivamus sagittis lacus vel<br>augue laoreet rutrum faucibus." class="btn btn-default">
+                        <button popover-placement="right"
+                                popover="Ajouter les dépendances dans le pom (web et actuator) puis remplisser le formulaire de configuration " class="btn btn-default">
                             <i class="glyphicon glyphicon-question-sign"></i>
                         </button>
                     </p>
                 </div>
                 <div class="col-md-4">
                     <button ng-show="step1 !== 1" class="btn btn-success" ng-click="validateStep1()">Valider l'étape</button>
-                    <span class="text-danger" ng-show="step1 === -1">{{stepNotValidatedMessage}}</span>
+                    <p class="text-danger" ng-show="step1 === -1">{{stepNotValidatedMessage}}</p>
                     <p class="text-success" ng-show="step1 === 1">{{stepValidatedMessage}}</p>
                 </div>
-            </div><!--
+            </div>
 
-            <div class="stepContainer">
-                <div class="step2">
-                    <form ng-submit="validateStep2()">
-                        <input type="text" ng-model="step2Secret"/>
-                        <button type="submit">Valider étape 2</button>
-                        <span ng-show="step2 === 1" class="success">{{stepValidatedMessage}}</span>
-                        <span ng-show="step2 === -1" class="error">{{stepNotValidatedMessage}}</span>
-                    </form>
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>Etape 2</h3>
                 </div>
-                <div class="step3">
-                    <form ng-submit="validateStep3()">
-                        <input type="text" ng-model="step3Secret"/>
-                        <button type="submit">Valider étape 3</button>
-                        <span ng-show="step3 === 1" class="success">{{stepValidatedMessage}}</span>
-                        <span ng-show="step3 === -1" class="error">{{stepNotValidatedMessage}}</span>
-                    </form>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <p>
+                        <strong>Objectif :</strong> Se connecter à la base de donnée du serveur et récupérer la phrase secrète de l'étape 2.
+                    </p>
+                    <p>
+                        <button popover-placement="right"
+                                popover="Ajoutez les dépendances pour se connecter à une base H2 et regardez dans les propriétés du application.properties" class="btn btn-default">
+                            <i class="glyphicon glyphicon-question-sign"></i>
+                        </button>
+                    </p>
                 </div>
-                <div class="step4">
-                    <button ng-click="validateStep4()">Valider étape 4</button>
-                    <span ng-show="step4 === 1" class="success">{{stepValidatedMessage}}</span>
-                    <span ng-show="step4 === -1" class="error">{{stepNotValidatedMessage}}</span>
+                <div class="col-md-4">
+                    <input type="text" ng-model="step2Secret"/>
+                    <button ng-show="step2 !== 1" class="btn btn-success" ng-click="validateStep2()">Valider l'étape</button>
+                    <p class="text-danger" ng-show="step2 === -1">{{stepNotValidatedMessage}}</p>
+                    <p class="text-success" ng-show="step2 === 1">{{stepValidatedMessage}}</p>
                 </div>
-                <div class="step5">
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>Etape 3</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <p>
+                        <strong>Objectif :</strong> Se connecter à une file ActiveMQ et récupérer la phrase secrète de l'étape 3.
+                    </p>
+                    <p>
+                        <button popover-placement="right"
+                                popover="Ajoutez les dépendances pour se connecter à un broker ActiveMQ et regardez dans les propriétés du application.properties" class="btn btn-default">
+                            <i class="glyphicon glyphicon-question-sign"></i>
+                        </button>
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <input type="text" ng-model="step3Secret"/>
+                    <button ng-show="step3 !== 1" class="btn btn-success" ng-click="validateStep3()">Valider l'étape</button>
+                    <p class="text-danger" ng-show="step3 === -1">{{stepNotValidatedMessage}}</p>
+                    <p class="text-success" ng-show="step3 === 1">{{stepValidatedMessage}}</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>Etape 4</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <p>
+                        <strong>Objectif :</strong> Ajouter des urls sécurisées
+                    </p>
+                    <p>
+                        <button popover-placement="right"
+                                popover="Ajoutez les dépendances spring-security et regardez dans les propriétés du application.properties concernant la sécurité pour configurer le bon user et les bonnes url"
+                                class="btn btn-default">
+                            <i class="glyphicon glyphicon-question-sign"></i>
+                        </button>
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <button ng-show="step4 !== 1" class="btn btn-success" ng-click="validateStep4()">Valider l'étape</button>
+                    <p class="text-danger" ng-show="step4 === -1">{{stepNotValidatedMessage}}</p>
+                    <p class="text-success" ng-show="step4 === 1">{{stepValidatedMessage}}</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>Etape 5</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <p>
+                        <strong>Objectif :</strong> Trouver le commit de déploiement du serveur
+                    </p>
+                    <p>
+                        <button popover-placement="right"
+                                popover="Trouvez le bon endpoint actuator sur le serveur"
+                                class="btn btn-default">
+                            <i class="glyphicon glyphicon-question-sign"></i>
+                        </button>
+                    </p>
+                </div>
+                <div class="col-md-4">
                     <input type="text" ng-model="step5Secret"/>
-                    <button ng-click="validateStep5()">Valider étape 5</button>
-                    <span ng-show="step5 === 1" class="success">{{stepValidatedMessage}}</span>
-                    <span ng-show="step5 === -1" class="error">{{stepNotValidatedMessage}}</span>
+                    <button ng-show="step5 !== 1" class="btn btn-success" ng-click="validateStep5()">Valider l'étape</button>
+                    <p class="text-danger" ng-show="step5 === -1">{{stepNotValidatedMessage}}</p>
+                    <p class="text-success" ng-show="step5 === 1">{{stepValidatedMessage}}</p>
                 </div>
-            </div>-->
+            </div>
 
         </div>
     </div>
