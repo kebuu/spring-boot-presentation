@@ -98,7 +98,7 @@
                     </p>
                 </div>
                 <div class="col-md-4">
-                    <input type="text" ng-model="step2Secret"/>
+                    <input ng-show="step2 !== 1" type="text" ng-model="step2Secret"/>
                     <button ng-show="step2 !== 1" class="btn btn-success" ng-click="validateStep2()">Valider l'étape</button>
                     <p class="text-danger" ng-show="step2 === -1">{{stepNotValidatedMessage}}</p>
                     <p class="text-success" ng-show="step2 === 1">{{stepValidatedMessage}}</p>
@@ -123,7 +123,7 @@
                     </p>
                 </div>
                 <div class="col-md-4">
-                    <input type="text" ng-model="step3Secret"/>
+                    <input ng-show="step3 !== 1" type="text" ng-model="step3Secret"/>
                     <button ng-show="step3 !== 1" class="btn btn-success" ng-click="validateStep3()">Valider l'étape</button>
                     <p class="text-danger" ng-show="step3 === -1">{{stepNotValidatedMessage}}</p>
                     <p class="text-success" ng-show="step3 === 1">{{stepValidatedMessage}}</p>
@@ -174,7 +174,7 @@
                     </p>
                 </div>
                 <div class="col-md-4">
-                    <input type="text" ng-model="step5Secret"/>
+                    <input ng-show="step5 !== 1" type="text" ng-model="step5Secret"/>
                     <button ng-show="step5 !== 1" class="btn btn-success" ng-click="validateStep5()">Valider l'étape</button>
                     <p class="text-danger" ng-show="step5 === -1">{{stepNotValidatedMessage}}</p>
                     <p class="text-success" ng-show="step5 === 1">{{stepValidatedMessage}}</p>

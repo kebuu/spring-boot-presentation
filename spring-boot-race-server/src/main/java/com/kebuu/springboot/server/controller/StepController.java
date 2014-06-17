@@ -12,13 +12,17 @@ import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.*;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -36,6 +40,8 @@ public class StepController {
     private GameStepRepository gameStepRepository;
     @Autowired
     private Environment environment;
+    @Autowired
+    private SimpMessagingTemplate webSocketTemplate;
 
     @RequestMapping("/{userPseudo}/start")
     public ResponseEntity<Void> startPlaying(@PathVariable("userPseudo") String userPseudo) {
@@ -53,8 +59,10 @@ public class StepController {
         if(responseEntity.getStatusCode().equals(HttpStatus.OK)) {
             gameStepRepository.save(new GameStep(userPseudo, Step._1));
             result = new ResponseEntity<Void>(HttpStatus.OK);
+            broadcastGameStatus();
         }
 
+        broadcastGameStatus();
         return result;
     }
 
@@ -67,6 +75,7 @@ public class StepController {
         if(stepConfig.getStep2().equals(secret)) {
             gameStepRepository.save(new GameStep(userPseudo, Step._2));
             result = new ResponseEntity<Void>(HttpStatus.OK);
+            broadcastGameStatus();
         }
 
         return result;
@@ -81,6 +90,7 @@ public class StepController {
         if(stepConfig.getStep3().equals(secret)) {
             gameStepRepository.save(new GameStep(userPseudo, Step._3));
             result = new ResponseEntity<Void>(HttpStatus.OK);
+            broadcastGameStatus();
         }
 
         return result;
@@ -109,6 +119,7 @@ public class StepController {
         if(responseEntityShouldFail.getStatusCode() != HttpStatus.OK && responseEntityShouldSucceed.getStatusCode() == HttpStatus.OK) {
             gameStepRepository.save(new GameStep(userPseudo, Step._4));
             result = new ResponseEntity<Void>(HttpStatus.OK);
+            broadcastGameStatus();
         }
 
         return result;
@@ -123,6 +134,7 @@ public class StepController {
         if(environment.getProperty("git.commit.id.abbrev").equals(secret)) {
             gameStepRepository.save(new GameStep(userPseudo, Step._5));
             result = new ResponseEntity<Void>(HttpStatus.OK);
+            broadcastGameStatus();
         }
 
         return result;
@@ -131,35 +143,13 @@ public class StepController {
     @RequestMapping("/{userPseudo}/validateStep6")
     public ResponseEntity<Void> validateStep6(@PathVariable("userPseudo")String userPseudo, @RequestParam("userHostAndPort") String userHostAndPort) {
         log.info("Validation step 6 for player {} with data {}", userPseudo, userHostAndPort);
-
         ResponseEntity<Void> result = new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Accept", "*/*");
-        headers.set("Accept-Encoding", "gzip,deflate,sdch");
-        headers.set("Accept-Language", "fr-FR,fr;q=0.8,en-US;q=0.6,en;q=0.4");
-        headers.set("Cache-Control", "no-cache");
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("Origin", "chrome-extension://fdmmgilgnpjigdojojpjoooidkmcomcm");
-        headers.set("Host", "localhost:8182");
-        headers.setConnection("Keep-alive");
-//        headers.set("X-Requested-With", "XMLHttpRequest");
-        headers.set("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36");
-
-        //ResponseEntity<String> responseEntity = restTemplate.exchange("http://google.com", HttpMethod.OPTIONS, new HttpEntity<String>(headers), String.class);
-        ResponseEntity<String> responseEntity = restTemplate.exchange("http://127.0.0.1:8182/actuator/health", HttpMethod.OPTIONS, new HttpEntity<String>(headers), String.class);
-
-        if(responseEntity.getHeaders().containsKey("Access-Control-Allow-Origin")) {
-            gameStepRepository.save(new GameStep(userPseudo, Step._6));
-            result = new ResponseEntity<Void>(HttpStatus.OK);
-        }
-
         //Ajouter un filter CORS
         return result;
     }
 
     @RequestMapping("/gameStatus")
-    public ResponseEntity<GameStatus> gameStatus() {
+    public ResponseEntity<GameStatus> broadcastGameStatus() {
         GameStatus gameStatus = new GameStatus();
 
         Iterable<GameStep> gameSteps = gameStepRepository.findAll();
@@ -188,6 +178,7 @@ public class StepController {
             gameStatus.getUserGameStatus().add(userGameStatus);
         }
 
+        webSocketTemplate.convertAndSend("/topic/gameStatus", gameStatus);
         return new ResponseEntity<GameStatus>(gameStatus, HttpStatus.OK);
     }
 }
