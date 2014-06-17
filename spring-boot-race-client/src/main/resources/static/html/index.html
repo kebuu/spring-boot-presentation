@@ -1,67 +1,124 @@
 <!DOCTYPE html>
 <html>
-<head lang="en">
+<head lang="fr">
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/webjars/bootstrap/3.1.1/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../styles/app.css"/>
+    <script src="/webjars/jquery/1.9.0/jquery.min.js"></script>
     <script src="/webjars/angularjs/1.2.17/angular.min.js"></script>
+    <script src="/webjars/angular-ui-bootstrap/0.11.0/ui-bootstrap-tpls.min.js"></script>
     <script src="../scripts/app.js"></script>
     <title>Spring-boot Race</title>
 </head>
 <body ng-app="springBootRaceClient">
 
-<div ng-controller="mainCtrl">
-    <div class="mainConfig">
-        <form name="configForm" ng-submit="startPlaying()" novalidate>
-            <p>
-                <label for="pseudo">Pseudo</label><input id="pseudo" type="text" ng-model="userPseudo" required/>
-            </p>
-            <p>
-                <label for="serverIp">Ip du server</label><input id="serverIp" type="text" ng-model="serverIp" required/>
-            </p>
-            <p>
-                <label for="clientIp">Votre ip</label><input id="clientIp" type="text" ng-model="clientIp"/>
-            </p>
-            <button type="submit">Tester la connection au serveur</button>
-            <p>
-                <span ng-show="configOk === 1" class="success">Cela semble bon vous pouvez commencer à jouer</span>
-                <span ng-show="configOk === -1" class="error">Impossible de se connecter au serveur</span>
-            </p>
-        </form>
+    <div ng-controller="mainCtrl">
+
+        <div class="navbar navbar-inverse" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <h1 class="navbar-brand">Spring-boot Race</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <div class="row">
+
+                <div class="col-md-12">
+
+                    <div class="mainConfig">
+
+                        <form name="configForm" ng-submit="startPlaying()" novalidate role="form">
+                            <div>
+                                <h2>Configuration</h2>
+
+                                <div class="form-group">
+                                    <label for="pseudo">Pseudo</label>
+                                    <input type="text" class="form-control" id="pseudo" placeholder="Votre pseudo"  ng-model="userPseudo" required />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="serverIp">Ip du server</label>
+                                    <input class="form-control" id="serverIp" type="text" ng-model="serverIp" required/>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="clientIp">Votre ip</label>
+                                    <input class="form-control" id="clientIp" type="text" ng-model="clientIp"/>
+                                </div>
+
+                                <p>
+                                    <button type="submit" class="btn btn-default">Tester la connection au serveur</button>
+                                </p>
+
+                                <p class="text-success" ng-show="configOk === 1">Cela semble bon vous pouvez commencer à jouer</p>
+                                <p class="text-danger" ng-show="configOk === -1">Impossible de se connecter au serveur</p>
+                            </div>
+
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>Etape 1</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <p>
+                        <strong>Objectif :</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eros augue, vestibulum quis venenatis sit amet, venenatis at nisi. Curabitur tempor magna vel elementum tristique.
+                    </p>
+                    <p>
+                        <button tooltip-placement="right" tooltip-trigger="mouseenter" tooltip-html-unsafe="Vivamus sagittis lacus vel<br>augue laoreet rutrum faucibus." class="btn btn-default">
+                            <i class="glyphicon glyphicon-question-sign"></i>
+                        </button>
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <button ng-show="step1 !== 1" class="btn btn-success" ng-click="validateStep1()">Valider l'étape</button>
+                    <span class="text-danger" ng-show="step1 === -1">{{stepNotValidatedMessage}}</span>
+                    <p class="text-success" ng-show="step1 === 1">{{stepValidatedMessage}}</p>
+                </div>
+            </div><!--
+
+            <div class="stepContainer">
+                <div class="step2">
+                    <form ng-submit="validateStep2()">
+                        <input type="text" ng-model="step2Secret"/>
+                        <button type="submit">Valider étape 2</button>
+                        <span ng-show="step2 === 1" class="success">{{stepValidatedMessage}}</span>
+                        <span ng-show="step2 === -1" class="error">{{stepNotValidatedMessage}}</span>
+                    </form>
+                </div>
+                <div class="step3">
+                    <form ng-submit="validateStep3()">
+                        <input type="text" ng-model="step3Secret"/>
+                        <button type="submit">Valider étape 3</button>
+                        <span ng-show="step3 === 1" class="success">{{stepValidatedMessage}}</span>
+                        <span ng-show="step3 === -1" class="error">{{stepNotValidatedMessage}}</span>
+                    </form>
+                </div>
+                <div class="step4">
+                    <button ng-click="validateStep4()">Valider étape 4</button>
+                    <span ng-show="step4 === 1" class="success">{{stepValidatedMessage}}</span>
+                    <span ng-show="step4 === -1" class="error">{{stepNotValidatedMessage}}</span>
+                </div>
+                <div class="step5">
+                    <input type="text" ng-model="step5Secret"/>
+                    <button ng-click="validateStep5()">Valider étape 5</button>
+                    <span ng-show="step5 === 1" class="success">{{stepValidatedMessage}}</span>
+                    <span ng-show="step5 === -1" class="error">{{stepNotValidatedMessage}}</span>
+                </div>
+            </div>-->
+
+        </div>
     </div>
-    <div class="stepContainer">
-        <div class="step1">
-            <button ng-click="validateStep1()">Valider étape 1</button>
-            <span ng-show="step1 === 1" class="success">{{stepValidatedMessage}}</span>
-            <span ng-show="step1 === -1" class="error">{{stepNotValidatedMessage}}</span>
-        </div>
-        <div class="step2">
-            <form ng-submit="validateStep2()">
-                <input type="text" ng-model="step2Secret"/>
-                <button type="submit">Valider étape 2</button>
-                <span ng-show="step2 === 1" class="success">{{stepValidatedMessage}}</span>
-                <span ng-show="step2 === -1" class="error">{{stepNotValidatedMessage}}</span>
-            </form>
-        </div>
-        <div class="step3">
-            <form ng-submit="validateStep3()">
-                <input type="text" ng-model="step3Secret"/>
-                <button type="submit">Valider étape 3</button>
-                <span ng-show="step3 === 1" class="success">{{stepValidatedMessage}}</span>
-                <span ng-show="step3 === -1" class="error">{{stepNotValidatedMessage}}</span>
-            </form>
-        </div>
-        <div class="step4">
-            <button ng-click="validateStep4()">Valider étape 4</button>
-            <span ng-show="step4 === 1" class="success">{{stepValidatedMessage}}</span>
-            <span ng-show="step4 === -1" class="error">{{stepNotValidatedMessage}}</span>
-        </div>
-        <div class="step5">
-            <input type="text" ng-model="step5Secret"/>
-            <button ng-click="validateStep5()">Valider étape 5</button>
-            <span ng-show="step5 === 1" class="success">{{stepValidatedMessage}}</span>
-            <span ng-show="step5 === -1" class="error">{{stepNotValidatedMessage}}</span>
-        </div>
-    </div>
-</div>
 
 </body>
 </html>

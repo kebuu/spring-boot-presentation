@@ -1,4 +1,4 @@
-var module = angular.module('springBootRaceClient', []);
+var module = angular.module('springBootRaceClient', ['ui.bootstrap']);
 
 module.controller('mainCtrl', function($scope, $http) {
 
