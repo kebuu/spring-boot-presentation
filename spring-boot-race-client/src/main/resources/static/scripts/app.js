@@ -2,17 +2,8 @@ var module = angular.module('springBootRaceClient', ['ui.bootstrap']);
 
 module.controller('mainCtrl', function($scope, $http) {
 
-
     $scope.stepValidatedMessage = 'OK étape validée';
     $scope.stepNotValidatedMessage = 'Etape non validée';
-
-    $scope.userPseudo = 'kebuu';
-    $scope.serverIp = 'localhost';
-    $scope.serverPort = '8182';
-    $scope.userHostAndPort = 'localhost:8181';
-    $scope.step2Secret = 'Un message secret pour le step 2';
-    $scope.step3Secret = 'Un message secret pour le step 3';
-    $scope.step5Secret = 'b47fb25';
 
     var buildBaseUrl = function() {
         return url = 'http://' + $scope.serverIp + ':' + $scope.serverPort + '/' + $scope.userPseudo + '/';
