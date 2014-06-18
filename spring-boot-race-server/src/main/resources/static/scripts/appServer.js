@@ -27,6 +27,11 @@ module.controller('mainCtrl', function($scope) {
         });
 
         $scope.gameStatus = data.userGameStatus;
+        $(".table").animate({
+            backgroundColor: "yellow"
+        }).animate({
+            backgroundColor: "white"
+        });
     };
 
     var stompClient = null;
