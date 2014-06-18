@@ -54,7 +54,7 @@ public class StepController {
         log.info("Validation step 1 for player {} with data {}", userPseudo, userHostAndPort);
         ResponseEntity<Void> result = new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 
-        ResponseEntity<String> responseEntity = restTemplate.getForEntity("http://" + userHostAndPort + "/health", String.class);
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity("http://" + userHostAndPort + "/zen/health", String.class);
 
         if(responseEntity.getStatusCode().equals(HttpStatus.OK)) {
             gameStepRepository.save(new GameStep(userPseudo, Step._1));
@@ -102,7 +102,7 @@ public class StepController {
 
         ResponseEntity<Void> result = new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 
-        String url = "http://" + userHostAndPort + "/env";
+        String url = "http://" + userHostAndPort + "/zen/env";
 
         ResponseEntity<String> responseEntityShouldFail = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<>(new HttpHeaders()), String.class);
 
@@ -137,14 +137,6 @@ public class StepController {
             broadcastGameStatus();
         }
 
-        return result;
-    }
-
-    @RequestMapping("/{userPseudo}/validateStep6")
-    public ResponseEntity<Void> validateStep6(@PathVariable("userPseudo")String userPseudo, @RequestParam("userHostAndPort") String userHostAndPort) {
-        log.info("Validation step 6 for player {} with data {}", userPseudo, userHostAndPort);
-        ResponseEntity<Void> result = new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
-        //Ajouter un filter CORS
         return result;
     }
 

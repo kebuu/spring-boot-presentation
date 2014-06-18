@@ -11,4 +11,5 @@ public class StepConfig {
 
     private String step2;
     private String step3;
+    private String h2Pass;
 }

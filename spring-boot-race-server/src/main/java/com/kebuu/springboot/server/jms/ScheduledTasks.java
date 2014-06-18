@@ -22,7 +22,6 @@ public class ScheduledTasks {
 
     @Scheduled(fixedRate = 2000)
     public void sendStep3SecretMessage() {
-        System.out.println("scheduled");
         jmsTemplate.convertAndSend(step3Destintation, stepConfig.getStep3());
     }
 }
