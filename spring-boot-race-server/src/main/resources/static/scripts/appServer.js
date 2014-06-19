@@ -1,6 +1,6 @@
 var module = angular.module('springBootRaceServer', []);
 
-module.controller('mainCtrl', function($scope) {
+module.controller('mainCtrl', function($scope, $http) {
 
     $scope.gameStatus = [];
     $scope.onGameStatusUpdated = function(data) {
@@ -44,6 +44,8 @@ module.controller('mainCtrl', function($scope) {
                     $scope.onGameStatusUpdated(JSON.parse(message.body));
                 });
             });
+
+            $http.get('/gameStatus');
         });
     };
 
